@@ -1,4 +1,4 @@
-# Thematic Mapping – Advanced Analytical Fichamento Framework
+# Thematic Mapping 
 
 This guide presents a modular structure for mapping academic themes, problems, or conceptual clusters across multiple sources. 
 

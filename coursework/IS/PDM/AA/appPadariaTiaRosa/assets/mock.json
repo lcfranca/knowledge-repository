@@ -1,0 +1,104 @@
+[
+  {
+    "id": "1",
+    "nome": "Pão Francês",
+    "preco": 0.8,
+    "descricao": "Pãozinho crocante, fresquinho da hora.",
+    "imagem": "https://s2-receitas.glbimg.com/-V4nFrbjz9JMuWJnvQxl2NEplg8=/0x0:1280x922/924x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_e84042ef78cb4708aeebdf1c68c6cbd6/internal_photos/bs/2020/U/q/B5doHYQcKDxm0YsOynPA/pao-frances.jpeg"
+  },
+  {
+    "id": "2",
+    "nome": "Bolo de Fubá",
+    "preco": 12.5,
+    "descricao": "Bolo caseiro macio e saboroso.",
+    "imagem": "https://receitadaboa.com.br/wp-content/uploads/2024/08/Imagem-ilustrativa-de-bolo-de-fuba-1.webp"
+  },
+  {
+    "id": "3",
+    "nome": "Coxinha de Frango",
+    "preco": 6.0,
+    "descricao": "Salgado clássico recheado com frango temperado.",
+    "imagem": "https://www.receitas-sem-fronteiras.com/media/86139_highlight-35_crop.jpg/rh/coxinha-de-frango.jpg"
+  },
+  {
+    "id": "4",
+    "nome": "Sonho de Creme",
+    "preco": 5.5,
+    "descricao": "Doce fofinho com recheio de creme.",
+    "imagem": "https://static.itdg.com.br/images/640-400/f145dce09a0fa9bf08911f633c778f42/128240-original.jpg"
+  },
+  {
+    "id": "5",
+    "nome": "Café Expresso",
+    "preco": 4.0,
+    "descricao": "Café encorpado feito na hora.",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Captura_de_Tela_2017-08-30_%C3%A0s_23.42.42.png/330px-Captura_de_Tela_2017-08-30_%C3%A0s_23.42.42.png"
+  },
+  {
+    "id": "6",
+    "nome": "Baguete Integral",
+    "preco": 8.0,
+    "descricao": "Baguete de farinha integral, ideal para sanduíches.",
+    "imagem": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4nLG-zDPyhLjDxGxK_yoyCj0DfyApEyu3ZA&s"
+  }
+  ,
+  {
+    "id": "7",
+    "nome": "Bolo de Chocolate",
+    "preco": 45.0,
+    "descricao": "Bolo caseiro de chocolate 1kg, ideal para festas.",
+    "imagem": "https://pt.petitchef.com/imgupl/recipe/bolo-de-chocolate-humido-e-fofinho--lg-454177p704082.webp",
+    "oferta": true,
+    "precoOferta": 39.0,
+    "preorder": true
+  },
+  {
+    "id": "8",
+    "nome": "Torta de Maçã",
+    "preco": 30.0,
+    "descricao": "Torta tradicional de maçã com canela.",
+    "imagem": "https://guiadacozinha.com.br/wp-content/uploads/2004/01/Torta-de-maca-pratica-350x230.jpg",
+    "oferta": false,
+    "preorder": true
+  },
+  {
+    "id": "9",
+    "nome": "Pão Integral com Sementes",
+    "preco": 3.5,
+    "descricao": "Pão nutritivo com mistura de sementes.",
+    "imagem": "https://i.panelinha.com.br/i1/64-bk-7569-blog-ayu2560.webp",
+    "oferta": true,
+    "precoOferta": 2.8,
+    "preorder": false
+  }
+  ,
+  {
+    "id": "10",
+    "nome": "Biscoito de Aveia",
+    "preco": 2.5,
+    "descricao": "Biscoitinhos de aveia integrais.",
+    "imagem": "https://s2-receitas.glbimg.com/0xzqVrmIqAnqG01JkFdpFAOZ084=/0x0:300x187/984x0/smart/filters:strip_icc()/g.glbimg.com/og/gs/gsat5/f/thumbs/materia/2014/04/30/biscoito-aveia-187_5900772507954249462.jpg",
+    "oferta": true,
+    "precoOferta": 1.9,
+    "preorder": false
+  },
+  {
+    "id": "11",
+    "nome": "Pão de Queijo (un)",
+    "preco": 1.5,
+    "descricao": "Pão de queijo mineiro, recheado.",
+    "imagem": "https://static.itdg.com.br/images/640-400/dfc5a3f918dc30f32747b44cd3a18712/pao-de-queijo-facil-e-delicioso-3-.jpg",
+    "oferta": true,
+    "precoOferta": 1.2,
+    "preorder": false
+  },
+  {
+    "id": "12",
+    "nome": "Mini Brownie",
+    "preco": 3.0,
+    "descricao": "Brownie de chocolate com gotas.",
+    "imagem": "https://delicious.com.br/wp-content/uploads/2024/07/DSC_0189.jpg",
+    "oferta": false,
+    "preorder": false
+  }
+]

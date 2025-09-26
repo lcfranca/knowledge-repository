@@ -1,0 +1,1596 @@
+---
+title: 'Capítulo 3: Probabilidade e Distribuições de Probabilidade'
+author: "Lucas Coelho França"
+date: "2025-09-25"
+output:
+  pdf_document: default
+  html_document: default
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Resolução dos exercícios do capítulo 3 do livro Statistics and Econometrics, de Salvatore Dominick e Derrick Reagle, conforme conteúdo da disciplina Métodos Quantitativos Aplicados às Ciências Contábeis.
+
+**Aluno:** Lucas Coelho França  
+**Matrícula:** 251012000  
+**Disciplina:** Métodos Quantitativos Aplicados às Ciências Contábeis  
+**Referência:** *Statistics and Econometrics*, Salvatore Dominick & Derrick Reagle — Capítulo 3
+
+
+# Supplementary Problems
+
+## PROBABILITY OF A SINGLE EVENT
+
+### 3.41
+
+What approach to probability is involved in the following statements? (a) The probability of a head in the toss of a balanced coin is 1/2. (b) The relative frequency of a head in 100 tosses of a coin is 0.53. (c) The probability of rain tomorrow is 20%
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+(a) The probability of a head in the toss of a balanced coin is 1/2.
+
+- Abordagem Clássica
+
+> A probabilidade é deduzida a priori, a partir da suposição de que a moeda é balanceada e que os dois resultados são igualmente possíveis.
+
+(b) The relative frequency of a head in 100 tosses of a coin is 0.53.
+
+- Abordagem Frequentista (Empírica)
+
+> A probabilidade é estimada a posteriori como a frequência relativa observada do evento (cara) em múltiplas repetições independentes do experimento (lançamento da moeda.
+
+(c) The probability of rain tomorrow is 20%
+
+- Abordagem Subjetiva (Bayesiana)
+
+> Trata-se de um grau de plausibilidade atribuído ao evento com base em modelos estatísticos ou inferência bayesiana. 
+
+### 3.42
+
+What is the probability that in tossing a balanced coin we get (a) a tail, (b) a head, (c) not a tail, or (d) a
+tail or not a tail?
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+**(a) A probability of a tail**
+
+* Pela abordagem clássica: eventos equiprováveis.  
+* $P(\text{Tail}) = \frac{1}{2} = 0.5$.
+
+**(b) A probability of a head**
+
+* Simetria idêntica:  
+* $P(\text{Head}) = \frac{1}{2} = 0.5$.
+
+**(c) A probability of not a tail**
+
+* Evento complementar de “Tail”.  
+* $P(\text{Not Tail}) = 1 - P(\text{Tail}) = 1 - 0.5 = 0.5$.
+
+**(d) A probability of a tail or not a tail**
+
+* União de um evento e seu complementar → evento certo.  
+* $P(\text{Tail} \cup \text{Not Tail}) = 1$.
+
+**Cálculo em R**
+
+```{r}
+# Espaço amostral e probabilidades
+eventos <- c("Head", "Tail")
+prob <- c(0.5, 0.5)
+
+# (a) P(Tail)
+p_tail <- prob[eventos == "Tail"]
+
+# (b) P(Head)
+p_head <- prob[eventos == "Head"]
+
+# (c) P(Not Tail) = complemento
+p_not_tail <- 1 - p_tail
+
+# (d) P(Tail or Not Tail) = evento certo
+p_tail_or_not_tail <- p_tail + p_not_tail
+
+# Resultados
+resultado <- data.frame(
+  Evento = c("Tail", "Head", "Not Tail", "Tail or Not Tail"),
+  Probabilidade = c(p_tail, p_head, p_not_tail, p_tail_or_not_tail)
+)
+
+print(resultado)
+
+```
+### 3.43
+
+3.43 What is the probability that in one roll of a fair die we get (a) a 1, (b) a 6, (c) not a 1, or (d) a 1 or not
+a 1?
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+**(a) A probability of rolling a 1**
+
+* Pela abordagem clássica: todos os seis resultados são equiprováveis.  
+* $P(1) = \frac{1}{6} \approx 0.167$.
+
+**(b) A probability of rolling a 6**
+
+* Simetria idêntica:  
+* $P(6) = \frac{1}{6} \approx 0.167$.
+
+**(c) A probability of not rolling a 1**
+
+* Evento complementar de “1”.  
+* $P(\text{Not } 1) = 1 - P(1) = 1 - \frac{1}{6} = \frac{5}{6} \approx 0.833$.
+
+**(d) A probability of rolling a 1 or not a 1**
+
+* União de um evento e seu complementar → evento certo.  
+* $P(1 \cup \text{Not } 1) = 1$.
+
+**Código em R**
+
+```{r}
+# Espaço amostral e probabilidade
+eventos <- 1:6
+prob <- rep(1/6, 6)  # probabilidade uniforme
+
+# (a) P(1)
+p_1 <- prob[eventos == 1]
+
+# (b) P(6)
+p_6 <- prob[eventos == 6]
+
+# (c) P(Not 1) = complemento
+p_not_1 <- 1 - p_1
+
+# (d) P(1 or Not 1) = evento certo
+p_1_or_not_1 <- p_1 + p_not_1
+
+# Resultados
+resultado <- data.frame(
+  Evento = c("1", "6", "Not 1", "1 or Not 1"),
+  Probabilidade = c(p_1, p_6, p_not_1, p_1_or_not_1)
+)
+
+print(resultado)
+
+```
+### 3.44
+
+What is the probability that in a single pick from a standard deck of cards we pick (a) a club, (b) an ace, (c) the ace of clubs, (d) not a club, or (e) a club or not a club?
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+**(a) A probability of picking a club**
+
+* Um baralho padrão tem 52 cartas, sendo 13 de paus (clubs).  
+* $P(\text{Club}) = \frac{13}{52} = \frac{1}{4} = 0.25$.
+
+**(b) A probability of picking an ace**
+
+* Existem 4 ases no baralho.  
+* $P(\text{Ace}) = \frac{4}{52} = \frac{1}{13} \approx 0.0769$.
+
+**(c) A probability of picking the ace of clubs**
+
+* Apenas 1 carta corresponde a este evento.  
+* $P(\text{Ace of Clubs}) = \frac{1}{52} \approx 0.0192$.
+
+**(d) A probability of not picking a club**
+
+* Evento complementar de “club”.  
+* $P(\text{Not Club}) = 1 - P(\text{Club}) = 1 - \frac{1}{4} = \frac{3}{4} = 0.75$.
+
+**(e) A probability of picking a club or not a club**
+
+* União de um evento e seu complementar → evento certo.  
+* $P(\text{Club} \cup \text{Not Club}) = 1$.
+
+**Código em R**
+
+```{r}
+# Total de cartas
+total <- 52
+
+# (a) P(Club)
+p_club <- 13 / total
+
+# (b) P(Ace)
+p_ace <- 4 / total
+
+# (c) P(Ace of Clubs)
+p_ace_club <- 1 / total
+
+# (d) P(Not Club)
+p_not_club <- 1 - p_club
+
+# (e) P(Club or Not Club) = evento certo
+p_club_or_not <- 1
+
+# Resultados
+resultado <- data.frame(
+  Evento = c("Club", "Ace", "Ace of Clubs", "Not Club", "Club or Not Club"),
+  Probabilidade = c(p_club, p_ace, p_ace_club, p_not_club, p_club_or_not)
+)
+
+print(resultado)
+```
+### 3.45
+
+An urn contains 12 balls that are exactly alike except that 4 are blue, 3 are red, 3 are green, and 2 are white. What is the probability that by picking a single ball we pick (a) A blue ball? (b) A red ball? (c) A green ball? (d) A white ball? (e) A nonred ball? ( f) A nonwhite ball? (g) A white or nonwhite ball? Also (h) What are the odds of picking a green ball? (i) What are the odds of picking a nongreen ball?
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+
+**(a) Uma bola azul**
+
+* Abordagem clássica: todos os 12 objetos são equiprováveis.  
+* $P(\text{Blue}) = \dfrac{4}{12} = \dfrac{1}{3} \approx 0.3333$.
+
+**(b) Uma bola vermelha**
+
+* $P(\text{Red}) = \dfrac{3}{12} = \dfrac{1}{4} = 0.25$.
+
+**(c) Uma bola verde**
+
+* $P(\text{Green}) = \dfrac{3}{12} = \dfrac{1}{4} = 0.25$.
+
+**(d) Uma bola branca**
+
+* $P(\text{White}) = \dfrac{2}{12} = \dfrac{1}{6} \approx 0.1667$.
+
+**(e) Uma bola não vermelha**
+
+* Evento complementar de “Red”.  
+* $P(\text{Not Red}) = 1 - P(\text{Red}) = 1 - \dfrac{1}{4} = \dfrac{3}{4} = 0.75$.
+
+**(f) Uma bola não branca**
+
+* Evento complementar de “White”.  
+* $P(\text{Not White}) = 1 - P(\text{White}) = 1 - \dfrac{1}{6} = \dfrac{5}{6} \approx 0.8333$.
+
+**(g) Uma bola branca ou não branca**
+
+* União de um evento e seu complementar → evento certo.  
+* $P(\text{White} \cup \text{Not White}) = 1$.
+
+---
+
+**(h) Quais são as odds (probabilidades na forma de odds) de retirar uma bola verde?**
+
+* Odds a favor de Green = $\dfrac{P(\text{Green})}{1 - P(\text{Green})} = \dfrac{\tfrac{1}{4}}{\tfrac{3}{4}} = \dfrac{1}{3}$.  
+
+**(i) Quais são as odds de retirar uma bola não verde?**
+
+* $P(\text{Not Green}) = \dfrac{3}{4}$.  
+* Odds a favor de Not Green = $\dfrac{\tfrac{3}{4}}{\tfrac{1}{4}} = 3$.  
+**3:1** (três para um).
+
+
+**Cálculo em R**
+
+```{r}
+# Cálculo em R - urna com 12 bolas: 4 blue, 3 red, 3 green, 2 white
+total <- 12
+n_blue  <- 4
+n_red   <- 3
+n_green <- 3
+n_white <- 2
+
+# Probabilidades
+p_blue  <- n_blue  / total
+p_red   <- n_red   / total
+p_green <- n_green / total
+p_white <- n_white / total
+
+p_not_red   <- 1 - p_red
+p_not_white <- 1 - p_white
+p_white_or_not <- 1  # evento certo
+
+# Odds (a favor) = p / (1 - p)
+odds_green     <- p_green / (1 - p_green)     # odds a favor de green
+odds_not_green <- (1 - p_green) / p_green     # odds a favor de not green (alternativamente 1/odds_green)
+
+# Monta tabela de probabilidades
+probabilidades <- data.frame(
+  Evento = c("Blue", "Red", "Green", "White", "Not Red", "Not White", "White or Not White"),
+  Probabilidade = c(p_blue, p_red, p_green, p_white, p_not_red, p_not_white, p_white_or_not)
+)
+
+# Tabela de odds (representação numérica e formato "a:b")
+odds_table <- data.frame(
+  Evento = c("Green", "Not Green"),
+  Odds_numeric = c(odds_green, 1/odds_green), # odds a favor; para Not Green usamos recíproco
+  Odds_format = c(
+    paste0(as.integer(1), ":", as.integer(round(1/odds_green))),  # 1:3
+    paste0(as.integer(round(1/odds_green)), ":", as.integer(1))   # 3:1
+  )
+)
+
+# Impressão
+print("Probabilidades:")
+print(probabilidades)
+
+cat("\nOdds (a favor):\n")
+print(odds_table)
+
+# Valores com maior precisão
+cat("\nValores numéricos (com 4 casas decimais):\n")
+cat(sprintf("P(Blue) = %.4f\nP(Red) = %.4f\nP(Green) = %.4f\nP(White) = %.4f\nP(Not Red) = %.4f\nP(Not White) = %.4f\nP(White or Not White) = %.4f\n",
+            p_blue, p_red, p_green, p_white, p_not_red, p_not_white, p_white_or_not))
+cat(sprintf("Odds a favor de Green (numérico) = %.4f (formato 1:3)\nOdds a favor de Not Green (numérico) = %.4f (formato 3:1)\n",
+            odds_green, 1/odds_green))
+
+```
+
+### 3.46
+
+Suppose that a card is picked from a well-shuffled standard deck. The card is then replaced, the deck reshuffled, and another card is picked. As this process is repeated 520 times, we obtain 136 spades. (a) What is the relative frequency or empirical probability of getting a spade? (b) What is the classical or a priori probability of getting a spade? (c) What would you expect the relative frequency or empirical probability of getting a spade to be if the process is repeated many more times?
+
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+**(a) Relative frequency (empirical probability) of getting a spade**
+
+* O número observado de espadas foi 136 em 520 tentativas.  
+* $P_{\text{emp}}(\text{Spade}) = \dfrac{136}{520} = 0.2615 \approx 0.26$.
+
+**(b) Classical (a priori) probability of getting a spade**
+
+* Um baralho padrão tem 52 cartas, sendo 13 espadas.  
+* $P_{\text{classical}}(\text{Spade}) = \dfrac{13}{52} = \dfrac{1}{4} = 0.25$.
+
+**(c) Expectation if the process is repeated many more times**
+
+* Pela Lei dos Grandes Números, a frequência relativa tende à probabilidade verdadeira.  
+* $P_{\text{emp}}(\text{Spade}) \longrightarrow P_{\text{classical}}(\text{Spade}) = 0.25$.
+
+**Cálculo em R**
+
+```{r}
+
+# Dados observados
+n_trials <- 520
+n_spades <- 136
+
+# (a) Probabilidade empírica
+p_empirical <- n_spades / n_trials
+
+# (b) Probabilidade clássica
+total_cards <- 52
+spades <- 13
+p_classical <- spades / total_cards
+
+# (c) Tendência pela Lei dos Grandes Números
+p_limit <- p_classical
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("Empirical (observed)", "Classical (a priori)", "Expected (limit, LLN)"),
+  Probabilidade = c(p_empirical, p_classical, p_limit)
+)
+
+print(resultado)
+
+
+```
+
+### 3.47
+
+An insurance company found that from a sample of 10,000 men between the ages of 30 and 40, 87 become seriously ill during a 1-year period. (a) What is the relative frequency or empirical probability of men between 30 and 40 becoming seriously ill during a 1-year period? (b) Why is the insurance company interested in these results? (c) Suppose that the company subsequently sells health insurance to 1,387,684 men in the 30 to 40 age group. How many claims can the company expect during a 1-year period?
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+**(a) Frequência relativa (probabilidade empírica) de homens ficarem gravemente doentes**
+
+* O número de homens que ficaram gravemente doentes foi 87 em uma amostra de 10.000.  
+* $P_{\text{emp}}(\text{Doente}) = \dfrac{87}{10.000} = 0,0087$.
+
+**(b) Por que a companhia de seguros está interessada nesses resultados?**
+
+* A probabilidade empírica permite que a companhia estime o risco de doenças graves nesse grupo etário. Essa informação é essencial para definir os valores dos prêmios, estabelecer políticas de cobertura e prever custos futuros com sinistros, garantindo a sustentabilidade financeira.
+
+**(c) Número esperado de sinistros para 1.387.684 homens**
+
+* Usando a probabilidade empírica de (a), o número esperado de sinistros é calculado como:  
+* $\text{Sinistros esperados} = P_{\text{emp}}(\text{Doente}) \times \text{Número de homens} = 0,0087 \times 1.387.684 \approx 12.072,85$.  
+* Portanto, a companhia pode esperar aproximadamente 12.073 sinistros.
+
+**Cálculo em R**
+
+```{r}
+# Dados observados
+n_amostra <- 10000
+n_doentes <- 87
+n_segurados <- 1387684
+
+# (a) Probabilidade empírica
+p_empirica <- n_doentes / n_amostra
+
+# (c) Número esperado de sinistros
+sinistros_esperados <- p_empirica * n_segurados
+sinistros_esperados_arredondado <- round(sinistros_esperados)
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("Probabilidade empírica (a)", "Sinistros esperados (c)"),
+  Valor = c(p_empirica, sinistros_esperados_arredondado)
+)
+
+print(resultado)
+```
+
+## PROBABILITY OF MULTIPLE EVENTS
+
+### 3.48
+
+What types of events are the following? (a) Picking hearts or clubs on a single pick from a deck. (b) Picking diamonds or a queen on a single pick from a deck. (c) Two successive flips of a balanced coin. (d) Two successive tosses of a fair die. (e) Picking two cards from a deck with replacement. (f) Picking two cards from a deck without replacement. (g) Picking two balls from an urn without replacement.
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+
+**(a) Escolher copas ou paus em uma única retirada de um baralho**
+
+* Um baralho padrão tem 52 cartas, sendo 13 de copas e 13 de paus.  
+* Como os eventos "copas" e "paus" são mutuamente exclusivos, a probabilidade é:  
+* $P(\text{Copas ou Paus}) = \dfrac{13 + 13}{52} = \dfrac{26}{52} = \dfrac{1}{2} = 0,5$.  
+* Tipo de evento: **Mutuamente exclusivo**.
+
+**(b) Escolher ouros ou uma rainha em uma única retirada de um baralho**
+
+* Há 13 cartas de ouros e 4 rainhas, mas a rainha de ouros está em ambos os conjuntos.  
+* $P(\text{Ouros ou Rainha}) = P(\text{Ouros}) + P(\text{Rainha}) - P(\text{Ouros e Rainha}) = \dfrac{13}{52} + \dfrac{4}{52} - \dfrac{1}{52} = \dfrac{16}{52} = \dfrac{4}{13} \approx 0,3077$.  
+* Tipo de evento: **Não mutuamente exclusivo**.
+
+**(c) Dois lançamentos sucessivos de uma moeda equilibrada**
+
+* Cada lançamento tem 2 resultados possíveis (cara ou coroa), independentes entre si.  
+* Total de resultados possíveis: $2 \times 2 = 4$.  
+* Tipo de evento: **Independente**.
+
+**(d) Dois lançamentos sucessivos de um dado justo**
+
+* Cada lançamento tem 6 resultados possíveis, independentes entre si.  
+* Total de resultados possíveis: $6 \times 6 = 36$.  
+* Tipo de evento: **Independente**.
+
+**(e) Escolher duas cartas de um baralho com reposição**
+
+* Após a primeira carta ser escolhida, ela é reposta, e o baralho é embaralhado.  
+* A probabilidade de cada carta é independente.  
+* Tipo de evento: **Independente**.
+
+**(f) Escolher duas cartas de um baralho sem reposição**
+
+* A primeira carta escolhida afeta a composição do baralho para a segunda escolha.  
+* As probabilidades são dependentes.  
+* Tipo de evento: **Dependente**.
+
+**(g) Escolher duas bolas de uma urna sem reposição**
+
+* A primeira bola escolhida reduz o número de bolas na urna, afetando a segunda escolha.  
+* As probabilidades são dependentes.  
+* Tipo de evento: **Dependente**.
+
+**Cálculo em R**
+
+```{r}
+# Dados do baralho
+total_cartas <- 52
+copas <- 13
+paus <- 13
+ouros <- 13
+rainhas <- 4
+rainha_ouros <- 1
+
+# (a) Probabilidade de copas ou paus (mutuamente exclusivo)
+p_copas_ou_paus <- (copas + paus) / total_cartas
+
+# (b) Probabilidade de ouros ou rainha (não mutuamente exclusivo)
+p_ouros_ou_rainha <- (ouros / total_cartas) + (rainhas / total_cartas) - (rainha_ouros / total_cartas)
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("Copas ou Paus (a)", "Ouros ou Rainha (b)"),
+  Probabilidade = c(p_copas_ou_paus, p_ouros_ou_rainha)
+)
+
+# Tipos de eventos (qualitativos, apenas para exibição)
+tipos <- data.frame(
+  Caso = c("(a)", "(b)", "(c)", "(d)", "(e)", "(f)", "(g)"),
+  Tipo = c("Mutuamente exclusivo", "Não mutuamente exclusivo", "Independente", 
+           "Independente", "Independente", "Dependente", "Dependente")
+)
+
+print(resultado)
+print(tipos)
+```
+
+### 3.49
+
+What is the probability of getting (a) Four or more on a single toss of a fair die? (b) Ace or king on a single pick from a well-shuffled standard deck of cards? (c) A green or white ball from the urn of Prob. 3.45?
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+**(a) Probabilidade de obter quatro ou mais em um único lançamento de um dado justo**
+
+* Um dado justo tem 6 faces (1, 2, 3, 4, 5, 6).  
+* Resultados favoráveis (quatro ou mais): 4, 5, 6 (3 resultados).  
+* $P(\text{Quatro ou mais}) = \dfrac{3}{6} = \dfrac{1}{2} = 0,5$.
+
+**(b) Probabilidade de obter um ás ou rei em uma única retirada de um baralho padrão bem embaralhado**
+
+* Um baralho padrão tem 52 cartas, com 4 ases e 4 reis.  
+* Como os eventos "ás" e "rei" são mutuamente exclusivos:  
+* $P(\text{Ás ou Rei}) = \dfrac{4 + 4}{52} = \dfrac{8}{52} = \dfrac{2}{13} \approx 0,1538$.
+
+**(c) Probabilidade de obter uma bola verde ou branca de uma urna do problema 3.45**
+
+* A urna contém 12 bolas: 4 azuis, 3 vermelhas, 3 verdes e 2 brancas.  
+* Resultados favoráveis: 3 verdes + 2 brancas = 5 bolas.  
+* $P(\text{Verde ou Branca}) = \dfrac{3 + 2}{12} = \dfrac{5}{12} \approx 0,4167$.
+
+**Cálculo em R**
+
+```{r}
+# Dados do dado
+total_faces <- 6
+favoraveis_quatro_ou_mais <- 3
+
+# Dados do baralho
+total_cartas <- 52
+ases <- 4
+reis <- 4
+
+# Dados da urna (problema 3.45)
+total_bolas <- 12
+verdes <- 3
+brancas <- 2
+
+# (a) Probabilidade de quatro ou mais no dado
+p_quatro_ou_mais <- favoraveis_quatro_ou_mais / total_faces
+
+# (b) Probabilidade de ás ou rei
+p_as_ou_rei <- (ases + reis) / total_cartas
+
+# (c) Probabilidade de verde ou branca
+p_verde_ou_branca <- (verdes + brancas) / total_bolas
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("Quatro ou mais (a)", "Ás ou Rei (b)", "Verde ou Branca (c)"),
+  Probabilidade = c(p_quatro_ou_mais, p_as_ou_rei, p_verde_ou_branca)
+)
+
+print(resultado)
+```
+
+
+### 3.50
+
+What is the probability of getting
+(a) A diamond or a queen on a single pick from a deck of cards?
+(b) A diamond, a queen, or a king?
+(c) An African-American or a woman president of the United States if the probability of an African-American president is 0.25, of a woman is 0.15, and of an African-American woman is 0.07?
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+
+**(a) Probabilidade de obter ouros ou uma rainha em uma única retirada de um baralho de cartas**
+
+* Um baralho padrão tem 52 cartas, com 13 ouros e 4 rainhas, mas a rainha de ouros está em ambos os conjuntos.  
+* $P(\text{Ouros ou Rainha}) = P(\text{Ouros}) + P(\text{Rainha}) - P(\text{Ouros e Rainha}) = \dfrac{13}{52} + \dfrac{4}{52} - \dfrac{1}{52} = \dfrac{16}{52} = \dfrac{4}{13} \approx 0,3077$.
+
+**(b) Probabilidade de obter ouros, uma rainha ou um rei**
+
+* Há 13 ouros, 4 rainhas e 4 reis. Sobreposições: 1 rainha de ouros e 1 rei de ouros.  
+* $P(\text{Ouros, Rainha ou Rei}) = P(\text{Ouros}) + P(\text{Rainha}) + P(\text{Rei}) - P(\text{Ouros e Rainha}) - P(\text{Ouros e Rei}) - P(\text{Rainha e Rei}) + P(\text{Ouros, Rainha e Rei})$.  
+* Como não há carta que seja rainha e rei ao mesmo tempo, $P(\text{Rainha e Rei}) = 0$ e $P(\text{Ouros, Rainha e Rei}) = 0$.  
+* $P(\text{Ouros, Rainha ou Rei}) = \dfrac{13}{52} + \dfrac{4}{52} + \dfrac{4}{52} - \dfrac{1}{52} - \dfrac{1}{52} = \dfrac{19}{52} \approx 0,3654$.
+
+**(c) Probabilidade de um presidente afro-americano ou mulher, dado que $P(\text{Afro-americano}) = 0,25$, $P(\text{Mulher}) = 0,15$ e $P(\text{Afro-americana e Mulher}) = 0,07$**
+
+* $P(\text{Afro-americano ou Mulher}) = P(\text{Afro-americano}) + P(\text{Mulher}) - P(\text{Afro-americana e Mulher}) = 0,25 + 0,15 - 0,07 = 0,33$.
+
+**Cálculo em R**
+
+```{r}
+# Dados do baralho
+total_cartas <- 52
+ouros <- 13
+rainhas <- 4
+reis <- 4
+rainha_ouros <- 1
+rei_ouros <- 1
+
+# Dados do presidente
+p_afro_americano <- 0.25
+p_mulher <- 0.15
+p_afro_americana_mulher <- 0.07
+
+# (a) Probabilidade de ouros ou rainha
+p_ouros_ou_rainha <- (ouros / total_cartas) + (rainhas / total_cartas) - (rainha_ouros / total_cartas)
+
+# (b) Probabilidade de ouros, rainha ou rei
+p_ouros_rainha_ou_rei <- (ouros / total_cartas) + (rainhas / total_cartas) + (reis / total_cartas) - 
+                         (rainha_ouros / total_cartas) - (rei_ouros / total_cartas)
+
+# (c) Probabilidade de afro-americano ou mulher
+p_afro_ou_mulher <- p_afro_americano + p_mulher - p_afro_americana_mulher
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("Ouros ou Rainha (a)", "Ouros, Rainha ou Rei (b)", "Afro-americano ou Mulher (c)"),
+  Probabilidade = c(p_ouros_ou_rainha, p_ouros_rainha_ou_rei, p_afro_ou_mulher)
+)
+
+print(resultado)
+```
+
+### 3.51
+
+What is the probability of
+(a) Two ones in 2 rolls of a die?
+(b) Three tails in 3 flips of a coin?
+(c) A total of 6 in rolling 2 dice simultaneously?
+(d) A total of less than 5 in rolling 2 dice simultaneously?
+(e) A total of 10 or more in rolling 2 dice simultaneously?
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+**(a) Probabilidade de obter dois "uns" em 2 lançamentos de um dado**
+
+* Um dado justo tem 6 faces. A probabilidade de obter "um" em um lançamento é $\dfrac{1}{6}$.  
+* Como os lançamentos são independentes:  
+* $P(\text{Dois uns}) = \dfrac{1}{6} \times \dfrac{1}{6} = \dfrac{1}{36} \approx 0,0278$.
+
+**(b) Probabilidade de obter três coroas em 3 lançamentos de uma moeda**
+
+* A probabilidade de obter coroa em um lançamento é $\dfrac{1}{2}$.  
+* Como os lançamentos são independentes:  
+* $P(\text{Três coroas}) = \dfrac{1}{2} \times \dfrac{1}{2} \times \dfrac{1}{2} = \dfrac{1}{8} = 0,125$.
+
+**(c) Probabilidade de obter uma soma de 6 ao lançar 2 dados simultaneamente**
+
+* Total de resultados possíveis: $6 \times 6 = 36$.  
+* Resultados que somam 6: (1,5), (2,4), (3,3), (4,2), (5,1) → 5 resultados.  
+* $P(\text{Soma 6}) = \dfrac{5}{36} \approx 0,1389$.
+
+**(d) Probabilidade de obter uma soma menor que 5 ao lançar 2 dados simultaneamente**
+
+* Resultados que somam menos que 5 (ou seja, 2, 3 ou 4):  
+  * Soma 2: (1,1) → 1 resultado.  
+  * Soma 3: (1,2), (2,1) → 2 resultados.  
+  * Soma 4: (1,3), (2,2), (3,1) → 3 resultados.  
+* Total: $1 + 2 + 3 = 6$ resultados.  
+* $P(\text{Soma < 5}) = \dfrac{6}{36} = \dfrac{1}{6} \approx 0,1667$.
+
+**(e) Probabilidade de obter uma soma de 10 ou mais ao lançar 2 dados simultaneamente**
+
+* Resultados que somam 10 ou mais (ou seja, 10, 11 ou 12):  
+  * Soma 10: (4,6), (5,5), (6,4) → 3 resultados.  
+  * Soma 11: (5,6), (6,5) → 2 resultados.  
+  * Soma 12: (6,6) → 1 resultado.  
+* Total: $3 + 2 + 1 = 6$ resultados.  
+* $P(\text{Soma} \geq 10) = \dfrac{6}{36} = \dfrac{1}{6} \approx 0,1667$.
+
+**Cálculo em R**
+
+```{r}
+# Dados do dado e moeda
+faces_dado <- 6
+lados_moeda <- 2
+total_resultados_2dados <- 36
+
+# (a) Probabilidade de dois "uns"
+p_dois_uns <- (1 / faces_dado) * (1 / faces_dado)
+
+# (b) Probabilidade de três coroas
+p_tres_coroas <- (1 / lados_moeda) ^ 3
+
+# (c) Probabilidade de soma 6
+p_soma_6 <- 5 / total_resultados_2dados
+
+# (d) Probabilidade de soma < 5
+p_soma_menor_5 <- 6 / total_resultados_2dados
+
+# (e) Probabilidade de soma >= 10
+p_soma_10_ou_mais <- 6 / total_resultados_2dados
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("Dois uns (a)", "Três coroas (b)", "Soma 6 (c)", "Soma < 5 (d)", "Soma >= 10 (e)"),
+  Probabilidade = c(p_dois_uns, p_tres_coroas, p_soma_6, p_soma_menor_5, p_soma_10_ou_mais)
+)
+
+print(resultado)
+```
+
+### 3.52
+
+What is the probability of obtaining the following from a deck of cards:
+(a) A diamond on the second pick when the first card picked and not replaced was a diamond?
+(b) A diamond on the second pick when the first card picked and not replaced was not a diamond?
+(c) A king on the third pick when a queen and a jack were already obtained on the first and second pick and not replaced?
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+**(a) Probabilidade de obter ouros na segunda retirada, dado que a primeira carta retirada e não reposta foi ouros**
+
+* Um baralho padrão tem 52 cartas, com 13 ouros.  
+* Após retirar 1 ouro na primeira retirada, restam 51 cartas, com 12 ouros.  
+* $P(\text{Ouros na segunda | Ouro na primeira}) = \dfrac{12}{51} = \dfrac{4}{17} \approx 0,2353$.
+
+**(b) Probabilidade de obter ouros na segunda retirada, dado que a primeira carta retirada e não reposta não foi ouros**
+
+* Se a primeira carta não foi ouros, restam 51 cartas, com 13 ouros (pois nenhum ouro foi retirado).  
+* $P(\text{Ouros na segunda | Não ouro na primeira}) = \dfrac{13}{51} \approx 0,2549$.
+
+**(c) Probabilidade de obter um rei na terceira retirada, dado que uma rainha e um valete foram obtidos nas primeira e segunda retiradas e não repostos**
+
+* Após retirar uma rainha e um valete, restam $52 - 2 = 50$ cartas.  
+* O baralho tem 4 reis inicialmente, e nem rainha nem valete são reis, então ainda há 4 reis.  
+* $P(\text{Rei na terceira | Rainha e Valete nas primeiras}) = \dfrac{4}{50} = \dfrac{2}{25} = 0,08$.
+
+**Cálculo em R**
+
+```{r}
+# Dados do baralho
+total_cartas <- 52
+ouros <- 13
+reis <- 4
+
+# (a) Probabilidade de ouros na segunda, dado ouro na primeira
+cartas_restantes_a <- total_cartas - 1
+ouros_restantes_a <- ouros - 1
+p_ouros_segunda_dado_ouros <- ouros_restantes_a / cartas_restantes_a
+
+# (b) Probabilidade de ouros na segunda, dado não ouro na primeira
+cartas_restantes_b <- total_cartas - 1
+ouros_restantes_b <- ouros
+p_ouros_segunda_dado_nao_ouros <- ouros_restantes_b / cartas_restantes_b
+
+# (c) Probabilidade de rei na terceira, dado rainha e valete nas primeiras
+cartas_restantes_c <- total_cartas - 2
+reis_restantes <- reis
+p_rei_terceira <- reis_restantes / cartas_restantes_c
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("Ouros na segunda | Ouro na primeira (a)", "Ouros na segunda | Não ouro na primeira (b)", "Rei na terceira | Rainha e Valete (c)"),
+  Probabilidade = c(p_ouros_segunda_dado_ouros, p_ouros_segunda_dado_nao_ouros, p_rei_terceira)
+)
+
+print(resultado)
+```
+
+### 3.53
+
+What is the probability of picking  
+(a) the king of clubs and a diamond in that order in 2 picks from a deck without replacement?  
+(b) A white ball and a green ball in that order in 2 picks without replacement from the urn of Prob. 3.45?  
+(c) A green ball and a white ball in that order in 2 picks without replacement from the urn of Prob. 3.45?  
+(d) A green and a white ball in that order in 2 picks without replacement from the same urn?  
+(e) Three green balls in 3 picks without replacement from the urn?
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+**(a) Probabilidade de retirar o rei de paus e depois um ouro, nessa ordem, em 2 retiradas sem reposição de um baralho**
+
+* Um baralho padrão tem 52 cartas, com 1 rei de paus e 13 ouros.  
+* Primeira retirada (rei de paus): $P(\text{Rei de paus}) = \dfrac{1}{52}$.  
+* Segunda retirada (ouro, sem reposição): restam 51 cartas, com 13 ouros (rei de paus não é ouro).  
+* $P(\text{Ouro | Rei de paus}) = \dfrac{13}{51}$.  
+* $P(\text{Rei de paus e Ouro}) = \dfrac{1}{52} \times \dfrac{13}{51} = \dfrac{13}{2652} \approx 0,0049$.
+
+**(b) Probabilidade de retirar uma bola branca e depois uma verde, nessa ordem, em 2 retiradas sem reposição da urna do problema 3.45**
+
+* A urna tem 12 bolas: 4 azuis, 3 vermelhas, 3 verdes, 2 brancas.  
+* Primeira retirada (branca): $P(\text{Branca}) = \dfrac{2}{12} = \dfrac{1}{6}$.  
+* Segunda retirada (verde, sem reposição): restam 11 bolas, com 3 verdes.  
+* $P(\text{Verde | Branca}) = \dfrac{3}{11}$.  
+* $P(\text{Branca e Verde}) = \dfrac{1}{6} \times \dfrac{3}{11} = \dfrac{3}{66} = \dfrac{1}{22} \approx 0,0455$.
+
+**(c) Probabilidade de retirar uma bola verde e depois uma branca, nessa ordem, em 2 retiradas sem reposição da urna do problema 3.45**
+
+* Primeira retirada (verde): $P(\text{Verde}) = \dfrac{3}{12} = \dfrac{1}{4}$.  
+* Segunda retirada (branca, sem reposição): restam 11 bolas, com 2 brancas.  
+* $P(\text{Branca | Verde}) = \dfrac{2}{11}$.  
+* $P(\text{Verde e Branca}) = \dfrac{1}{4} \times \dfrac{2}{11} = \dfrac{2}{44} = \dfrac{1}{22} \approx 0,0455$.
+
+**(d) Probabilidade de retirar uma bola verde e uma branca, nessa ordem, em 2 retiradas sem reposição da mesma urna**
+
+* Esta questão é idêntica à (c), pois a expressão "verde e branca, nessa ordem" implica a sequência verde seguida de branca.  
+* $P(\text{Verde e Branca}) = \dfrac{1}{4} \times \dfrac{2}{11} = \dfrac{1}{22} \approx 0,0455$.
+
+**(e) Probabilidade de retirar três bolas verdes em 3 retiradas sem reposição da urna**
+
+* Primeira retirada (verde): $P(\text{Verde}_1) = \dfrac{3}{12} = \dfrac{1}{4}$.  
+* Segunda retirada (verde, sem reposição): restam 11 bolas, com 2 verdes.  
+* $P(\text{Verde}_2 | \text{Verde}_1) = \dfrac{2}{11}$.  
+* Terceira retirada (verde, sem reposição): restam 10 bolas, com 1 verde.  
+* $P(\text{Verde}_3 | \text{Verde}_1, \text{Verde}_2) = \dfrac{1}{10}$.  
+* $P(\text{Três verdes}) = \dfrac{1}{4} \times \dfrac{2}{11} \times \dfrac{1}{10} = \dfrac{2}{440} = \dfrac{1}{220} \approx 0,0045$.
+
+**Cálculo em R**
+
+```{r}
+# Dados do baralho
+total_cartas <- 52
+rei_paus <- 1
+ouros <- 13
+
+# Dados da urna (problema 3.45)
+total_bolas <- 12
+brancas <- 2
+verdes <- 3
+
+# (a) Probabilidade de rei de paus e ouro
+p_rei_paus_e_ouro <- (rei_paus / total_cartas) * (ouros / (total_cartas - 1))
+
+# (b) Probabilidade de branca e verde
+p_branca_e_verde <- (brancas / total_bolas) * (verdes / (total_bolas - 1))
+
+# (c) Probabilidade de verde e branca
+p_verde_e_branca <- (verdes / total_bolas) * (brancas / (total_bolas - 1))
+
+# (d) Probabilidade de verde e branca (idêntica a c)
+p_verde_e_branca_d <- p_verde_e_branca
+
+# (e) Probabilidade de três verdes
+p_tres_verdes <- (verdes / total_bolas) * ((verdes - 1) / (total_bolas - 1)) * ((verdes - 2) / (total_bolas - 2))
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("Rei de paus e Ouro (a)", "Branca e Verde (b)", "Verde e Branca (c)", 
+           "Verde e Branca (d)", "Três verdes (e)"),
+  Probabilidade = c(p_rei_paus_e_ouro, p_branca_e_verde, p_verde_e_branca, 
+                    p_verde_e_branca_d, p_tres_verdes)
+)
+
+print(resultado)
+```
+
+### 3.54
+
+Suppose that the probability of rain on a given day is 0.1 and the probability of my having a car accident is 0.005 on any day and 0.012 on a rainy day. (a) What rule should I use to calculate the probability that on a given day it will rain and I will have a car accident? (b) State the rule asked for in part a, letting A signify accident and R signify rain. (b) Calculate the probability asked for in part a.
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+### 3.54
+
+**(a) Qual regra devo usar para calcular a probabilidade de que em um dado dia chova e eu tenha um acidente de carro?**
+
+* Como a probabilidade de um acidente é diferente em dias de chuva (0,012) e em dias quaisquer (0,005), o evento "acidente" depende do evento "chuva".  
+* A regra apropriada é a probabilidade condicional para eventos dependentes: $P(A \cap R) = P(R) \times P(A | R)$.
+
+**(b) Enuncie a regra pedida na parte a, usando A para acidente e R para chuva**
+
+* A probabilidade de chuva e acidente é dada por:  
+* $P(A \cap R) = P(R) \times P(A | R)$, onde $P(A | R)$ é a probabilidade condicional de um acidente dado que choveu.
+
+**(c) Calcule a probabilidade pedida na parte a**
+
+* Dados: $P(R) = 0,1$ (probabilidade de chuva), $P(A | R) = 0,012$ (probabilidade de acidente em um dia de chuva).  
+* $P(A \cap R) = P(R) \times P(A | R) = 0,1 \times 0,012 = 0,0012$.
+
+**Cálculo em R**
+
+```{r}
+# Dados fornecidos
+p_chuva <- 0.1
+p_acidente_dado_chuva <- 0.012
+
+# (c) Probabilidade de chuva e acidente
+p_chuva_e_acidente <- p_chuva * p_acidente_dado_chuva
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("Chuva e Acidente (c)"),
+  Probabilidade = c(p_chuva_e_acidente)
+)
+
+print(resultado)
+```
+### 3.55
+
+(a) What rule or theorem should I use to calculate for the statement in Prob. 3.54 the probability that it was raining when I had a car accident?  
+(b) State the rule or theorem applicable to part a.  
+(c) Answer the question in part c.
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+**(a)**
+
+* A regra apropriada é o **Teorema de Bayes**, pois precisamos de $P(R | A)$, que depende de $P(A \cap R)$, $P(A)$, e $P(R)$.
+
+**(b) Enuncie a regra ou teorema aplicável à parte a**
+
+* O Teorema de Bayes afirma:  
+* $P(R | A) = \dfrac{P(A \cap R)}{P(A)}$, onde $P(A \cap R) = P(R) \times P(A | R)$ e $P(A) = P(A \cap R) + P(A \cap R^c)$, sendo $R^c$ o evento complementar (não chover).
+
+**(c) Responda à questão da parte a**
+
+* Do problema 3.54: $P(R) = 0,1$, $P(A | R) = 0,012$, $P(A) = 0,005$ (probabilidade de acidente em qualquer dia).  
+* Calcule $P(A \cap R)$: $P(A \cap R) = P(R) \times P(A | R) = 0,1 \times 0,012 = 0,0012$.  
+* Calcule $P(A \cap R^c)$: $P(R^c) = 1 - P(R) = 0,9$, e $P(A | R^c) = \dfrac{P(A) - P(A \cap R)}{P(R^c)} = \dfrac{0,005 - 0,0012}{0,9} = \dfrac{0,0038}{0,9} \approx 0,004222$.  
+* Então, $P(A) = P(A \cap R) + P(A \cap R^c) = 0,0012 + (0,9 \times 0,004222) \approx 0,005$.  
+* Pelo Teorema de Bayes: $P(R | A) = \dfrac{P(A \cap R)}{P(A)} = \dfrac{0,0012}{0,005} = 0,24$.
+
+**Cálculo em R**
+
+```{r}
+# Dados do problema 3.54
+p_chuva <- 0.1
+p_acidente_dado_chuva <- 0.012
+p_acidente <- 0.005
+
+# (c) Cálculo da probabilidade de chuva dado acidente
+p_chuva_e_acidente <- p_chuva * p_acidente_dado_chuva
+p_nao_chuva <- 1 - p_chuva
+p_acidente_dado_nao_chuva <- (p_acidente - p_chuva_e_acidente) / p_nao_chuva
+p_acidente_total <- p_chuva_e_acidente + (p_nao_chuva * p_acidente_dado_nao_chuva)
+p_chuva_dado_acidente <- p_chuva_e_acidente / p_acidente_total
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("Chuva dado Acidente (c)"),
+  Probabilidade = c(p_chuva_dado_acidente)
+)
+
+print(resultado)
+```
+
+
+### 3.56
+
+In how many different ways can 6 qualified individuals be assigned to  
+(a) Three trainee positions available if the positions are identical?  
+(b) Three trainee positions eventually if the positions differ?  
+(c) Six trainee positions available if the positions differ?
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+
+**(a) Número de maneiras de atribuir 6 indivíduos qualificados a 3 posições de estagiário idênticas**
+
+* Como as posições são idênticas, a ordem não importa, e usamos combinações.  
+* O número de maneiras de escolher 3 indivíduos de 6 é dado por:  
+* $C(6, 3) = \dfrac{6!}{3!(6-3)!} = \dfrac{720}{6 \cdot 6} = 20$.
+
+**(b) Número de maneiras de atribuir 6 indivíduos qualificados a 3 posições de estagiário distintas**
+
+* Como as posições são diferentes, a ordem de atribuição importa, e usamos permutações.  
+* O número de maneiras de escolher e organizar 3 indivíduos de 6 em 3 posições é:  
+* $P(6, 3) = \dfrac{6!}{(6-3)!} = 6 \cdot 5 \cdot 4 = 120$.
+
+**(c) Número de maneiras de atribuir 6 indivíduos qualificados a 6 posições de estagiário distintas**
+
+* Como há 6 indivíduos para 6 posições distintas, cada indivíduo pode ser atribuído a uma posição única, e a ordem importa.  
+* O número de maneiras é o fatorial de 6:  
+* $6! = 6 \cdot 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1 = 720$.
+
+**Cálculo em R**
+
+```{r}
+# Dados
+n_individuos <- 6
+n_posicoes_a <- 3
+n_posicoes_b <- 3
+n_posicoes_c <- 6
+
+# (a) Combinações para posições idênticas
+c_6_3 <- choose(n_individuos, n_posicoes_a)
+
+# (b) Permutações para posições distintas
+p_6_3 <- factorial(n_individuos) / factorial(n_individuos - n_posicoes_b)
+
+# (c) Permutações para 6 posições distintas
+p_6_6 <- factorial(n_individuos)
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("3 posições idênticas (a)", "3 posições distintas (b)", "6 posições distintas (c)"),
+  Maneiras = c(c_6_3, p_6_3, p_6_6)
+)
+
+print(resultado)
+```
+
+
+## DISCRETE PROBABILITY DISTRIBUTIONS: THE BINOMIAL DISTRIBUTION
+
+### 3.57
+
+The probability distribution of lunch customers at a restaurant is given in Table 3.5. Calculate  
+(a) the expected number of lunch customers,  
+(b) the variance, and  
+(c) the standard deviation.
+
+#### Table 3.5 — Probability Distribution of Lunch Customers at a Restaurant
+
+| Number of Customers (X) | Probability \( P(X) \) |
+|-------------------------|------------------------|
+| 100                     | 0.2                    |
+| 110                     | 0.3                    |
+| 118                     | 0.2                    |
+| 120                     | 0.2                    |
+| 125                     | 0.1                    |
+| **Total**               | **1.0**                |
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+
+**(a) Número esperado de clientes no almoço**
+
+* O valor esperado $E(X)$ é calculado como: $E(X) = \sum X \cdot P(X)$.  
+* $E(X) = (100 \cdot 0,2) + (110 \cdot 0,3) + (118 \cdot 0,2) + (120 \cdot 0,2) + (125 \cdot 0,1)$.  
+* $E(X) = 20 + 33 + 23,6 + 24 + 12,5 = 113,1$.
+
+**(b) Variância**
+
+* A variância $Var(X)$ é dada por: $Var(X) = \sum (X - E(X))^2 \cdot P(X)$.  
+* $E(X) = 113,1$. Calcula-se para cada $X$:  
+  * $(100 - 113,1)^2 \cdot 0,2 = 171,61 \cdot 0,2 = 34,322$.  
+  * $(110 - 113,1)^2 \cdot 0,3 = 9,61 \cdot 0,3 = 2,883$.  
+  * $(118 - 113,1)^2 \cdot 0,2 = 24,01 \cdot 0,2 = 4,802$.  
+  * $(120 - 113,1)^2 \cdot 0,2 = 47,61 \cdot 0,2 = 9,522$.  
+  * $(125 - 113,1)^2 \cdot 0,1 = 141,61 \cdot 0,1 = 14,161$.  
+* $Var(X) = 34,322 + 2,883 + 4,802 + 9,522 + 14,161 = 65,69$.
+
+**(c) Desvio padrão**
+
+* O desvio padrão é a raiz quadrada da variância:  
+* $\sigma = \sqrt{Var(X)} = \sqrt{65,69} \approx 8,1049$.
+
+**Cálculo em R**
+
+```{r}
+# Dados da distribuição
+clientes <- c(100, 110, 118, 120, 125)
+probabilidades <- c(0.2, 0.3, 0.2, 0.2, 0.1)
+
+# (a) Valor esperado
+valor_esperado <- sum(clientes * probabilidades)
+
+# (b) Variancia
+variancia <- sum((clientes - valor_esperado)^2 * probabilidades)
+
+# (c) Desvio padrão
+desvio_padrao <- sqrt(variancia)
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("Valor esperado (a)", "Variancia (b)", "Desvio padrao (c)"),
+  Valor = c(valor_esperado, variancia, desvio_padrao)
+)
+
+print(resultado)
+```
+
+### 3.58
+
+What is the probability of  
+(a) Getting exactly 4 heads and 2 tails in 6 tosses of a balanced coin?  
+(b) Getting 3 sixes in 4 rolls of a fair die?
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+**(a) Probabilidade de obter exatamente 4 caras e 2 coroas em 6 lançamentos de uma moeda equilibrada**
+
+* Cada lançamento de uma moeda equilibrada tem probabilidade de cara $P(\text{Cara}) = \dfrac{1}{2}$.  
+* O número de maneiras de obter 4 caras em 6 lançamentos segue a distribuição binomial: $C(6, 4) = \dfrac{6!}{4!2!} = 15$.  
+* Probabilidade: $P(X = 4) = C(6, 4) \cdot \left(\dfrac{1}{2}\right)^4 \cdot \left(\dfrac{1}{2}\right)^2 = 15 \cdot \dfrac{1}{16} \cdot \dfrac{1}{4} = \dfrac{15}{64} \approx 0,2344$.
+
+**(b) Probabilidade de obter 3 seis em 4 lançamentos de um dado justo**
+
+* Um dado justo tem 6 faces, com probabilidade de obter seis $P(\text{Seis}) = \dfrac{1}{6}$.  
+* O número de maneiras de obter 3 seis em 4 lançamentos é $C(4, 3) = \dfrac{4!}{3!1!} = 4$.  
+* Probabilidade: $P(X = 3) = C(4, 3) \cdot \left(\dfrac{1}{6}\right)^3 \cdot \left(\dfrac{5}{6}\right)^1 = 4 \cdot \dfrac{1}{216} \cdot \dfrac{5}{6} = \dfrac{20}{1296} = \dfrac{5}{324} \approx 0,0154$.
+
+**Cálculo em R**
+
+```{r}
+# (a) Probabilidade de 4 caras em 6 lancamentos
+n_moeda <- 6
+k_caras <- 4
+p_cara <- 1/2
+p_4_caras <- choose(n_moeda, k_caras) * (p_cara^k_caras) * ((1 - p_cara)^(n_moeda - k_caras))
+
+# (b) Probabilidade de 3 seis em 4 lancamentos
+n_dado <- 4
+k_seis <- 3
+p_seis <- 1/6
+p_3_seis <- choose(n_dado, k_seis) * (p_seis^k_seis) * ((1 - p_seis)^(n_dado - k_seis))
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("4 caras em 6 lancamentos (a)", "3 seis em 4 lancamentos (b)"),
+  Probabilidade = c(p_4_caras, p_3_seis)
+)
+
+print(resultado)
+```
+### 3.59
+
+(a) If 20% of the students entering college drop out before receiving their diplomas, find the probability that out of 20 students picked at random from the very large number of students entering college, less than 3 drop out.  
+(b) If 90% of the bulbs produced in a plant are acceptable, what is the probability that out of 10 bulbs picked at random from the very large output of the plant, 8 are acceptable?
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+**(a) Probabilidade de que menos de 3 entre 20 estudantes escolhidos aleatoriamente abandonem a faculdade, dado que 20% dos estudantes desistem antes de receber o diploma**
+
+* A probabilidade de abandono é $p = 0,2$, e a probabilidade de não abandonar é $1 - p = 0,8$.  
+* Para $n = 20$ estudantes, usamos a distribuição binomial para calcular $P(X < 3) = P(X = 0) + P(X = 1) + P(X = 2)$.  
+* $P(X = k) = C(n, k) \cdot p^k \cdot (1 - p)^{n-k}$.  
+* $P(X = 0) = C(20, 0) \cdot 0,2^0 \cdot 0,8^{20} = 1 \cdot 1 \cdot 0,8^{20} \approx 0,0115$.  
+* $P(X = 1) = C(20, 1) \cdot 0,2^1 \cdot 0,8^{19} = 20 \cdot 0,2 \cdot 0,8^{19} \approx 0,0576$.  
+* $P(X = 2) = C(20, 2) \cdot 0,2^2 \cdot 0,8^{18} = \dfrac{20 \cdot 19}{2} \cdot 0,04 \cdot 0,8^{18} = 190 \cdot 0,04 \cdot 0,8^{18} \approx 0,1369$.  
+* $P(X < 3) = 0,0115 + 0,0576 + 0,1369 \approx 0,2060$.
+
+**(b) Probabilidade de que exatamente 8 de 10 lâmpadas escolhidas aleatoriamente sejam aceitáveis, dado que 90% das lâmpadas produzidas são aceitáveis**
+
+* A probabilidade de uma lâmpada ser aceitável é $p = 0,9$.  
+* Para $n = 10$ lâmpadas, usamos a distribuição binomial para calcular $P(X = 8)$.  
+* $P(X = 8) = C(10, 8) \cdot 0,9^8 \cdot (1 - 0,9)^2$.  
+* $C(10, 8) = \dfrac{10!}{8!2!} = \dfrac{10 \cdot 9}{2 \cdot 1} = 45$.  
+* $P(X = 8) = 45 \cdot 0,9^8 \cdot 0,1^2 \approx 45 \cdot 0,4305 \cdot 0,01 \approx 0,1937$.
+
+**Cálculo em R**
+
+```{r}
+# (a) Probabilidade de menos de 3 abandonos em 20 estudantes
+n_estudantes <- 20
+p_abandono <- 0.2
+p_menos_3 <- sum(dbinom(0:2, n_estudantes, p_abandono))
+
+# (b) Probabilidade de 8 lampadas aceitaveis em 10
+n_lampadas <- 10
+p_aceitavel <- 0.9
+p_8_aceitaveis <- dbinom(8, n_lampadas, p_aceitavel)
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("Menos de 3 abandonos (a)", "8 lampadas aceitaveis (b)"),
+  Probabilidade = c(p_menos_3, p_8_aceitaveis)
+)
+
+print(resultado)
+```
+
+### 3.60
+
+Calculate the expected value and standard deviation and determine the symmetry or asymmetry of the probability distribution of  
+(a) Prob. 3.58(a)  
+(b) Prob. 3.59(a)  
+(c) Prob. 3.59(b)
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+**(a) Valor esperado, desvio padrão e simetria da distribuição de probabilidade do problema 3.58(a)**
+
+* **Contexto**: Probabilidade de obter exatamente 4 caras em 6 lançamentos de uma moeda equilibrada (distribuição binomial com $n=6$, $p=0,5$).  
+* **Valor esperado**: $E(X) = n \cdot p = 6 \cdot 0,5 = 3$.  
+* **Desvio padrão**: $\sigma = \sqrt{n \cdot p \cdot (1 - p)} = \sqrt{6 \cdot 0,5 \cdot 0,5} = \sqrt{1,5} \approx 1,2247$.  
+* **Simetria**: A distribuição binomial com $p=0,5$ é simétrica, pois a probabilidade de sucesso (cara) é igual à de fracasso (coroa), resultando em uma distribuição espelhada em torno do valor esperado.
+
+**(b) Valor esperado, desvio padrão e simetria da distribuição de probabilidade do problema 3.59(a)**
+
+* **Contexto**: Probabilidade de menos de 3 abandonos entre 20 estudantes, com probabilidade de abandono $p=0,2$ (distribuição binomial com $n=20$, $p=0,2$).  
+* **Valor esperado**: $E(X) = n \cdot p = 20 \cdot 0,2 = 4$.  
+* **Desvio padrão**: $\sigma = \sqrt{n \cdot p \cdot (1 - p)} = \sqrt{20 \cdot 0,2 \cdot 0,8} = \sqrt{3,2} \approx 1,7889$.  
+* **Simetria**: A distribuição binomial com $p=0,2$ é assimétrica (inclinada à direita), pois $p \neq 0,5$. Valores menores são mais prováveis, e a cauda direita é mais longa.
+
+**(c) Valor esperado, desvio padrão e simetria da distribuição de probabilidade do problema 3.59(b)**
+
+* **Contexto**: Probabilidade de exatamente 8 lâmpadas aceitáveis em 10, com probabilidade de aceitação $p=0,9$ (distribuição binomial com $n=10$, $p=0,9$).  
+* **Valor esperado**: $E(X) = n \cdot p = 10 \cdot 0,9 = 9$.  
+* **Desvio padrão**: $\sigma = \sqrt{n \cdot p \cdot (1 - p)} = \sqrt{10 \cdot 0,9 \cdot 0,1} = \sqrt{0,9} \approx 0,9487$.  
+* **Simetria**: A distribuição binomial com $p=0,9$ é assimétrica (inclinada à esquerda), pois $p \neq 0,5$. Valores maiores são mais prováveis, e a cauda esquerda é mais longa.
+
+**Cálculo em R**
+
+```{r}
+# (a) Problema 3.58(a): 6 lancamentos de moeda, p=0.5
+n_moeda <- 6
+p_cara <- 0.5
+valor_esperado_a <- n_moeda * p_cara
+desvio_padrao_a <- sqrt(n_moeda * p_cara * (1 - p_cara))
+simetria_a <- "Simetrica"
+
+# (b) Problema 3.59(a): 20 estudantes, p=0.2
+n_estudantes <- 20
+p_abandono <- 0.2
+valor_esperado_b <- n_estudantes * p_abandono
+desvio_padrao_b <- sqrt(n_estudantes * p_abandono * (1 - p_abandono))
+simetria_b <- "Assimetrica (inclinada a direita)"
+
+# (c) Problema 3.59(b): 10 lampadas, p=0.9
+n_lampadas <- 10
+p_aceitavel <- 0.9
+valor_esperado_c <- n_lampadas * p_aceitavel
+desvio_padrao_c <- sqrt(n_lampadas * p_aceitavel * (1 - p_aceitavel))
+simetria_c <- "Assimetrica (inclinada a esquerda)"
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("3.58(a) Moeda", "3.59(a) Estudantes", "3.59(b) Lampadas"),
+  Valor_Esperado = c(valor_esperado_a, valor_esperado_b, valor_esperado_c),
+  Desvio_Padrao = c(desvio_padrao_a, desvio_padrao_b, desvio_padrao_c),
+  Simetria = c(simetria_a, simetria_b, simetria_c)
+)
+
+print(resultado)
+```
+
+### 3.61
+
+What is the probability of picking  
+(a) Two women in a sample of 5 drawn at random and without replacement from a group of 9 people, 4 of whom are women?  
+(b) Eight men in a sample of 10 drawn at random and without replacement from a population of 1000, half of which are men.
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+**(a) Probabilidade de escolher exatamente 2 mulheres em uma amostra de 5 pessoas, retiradas aleatoriamente e sem reposição, de um grupo de 9 pessoas, das quais 4 são mulheres**
+
+* Total de pessoas: 9, com 4 mulheres e 5 homens.  
+* Usamos a distribuição hipergeométrica: $P(X = k) = \dfrac{C(M, k) \cdot C(N-M, n-k)}{C(N, n)}$, onde $N=9$ (população total), $M=4$ (mulheres), $n=5$ (tamanho da amostra), $k=2$ (mulheres na amostra).  
+* $C(4, 2) = \dfrac{4!}{2!2!} = 6$, $C(5, 3) = \dfrac{5!}{3!2!} = 10$, $C(9, 5) = \dfrac{9!}{5!4!} = 126$.  
+* $P(X = 2) = \dfrac{C(4, 2) \cdot C(5, 3)}{C(9, 5)} = \dfrac{6 \cdot 10}{126} = \dfrac{60}{126} = \dfrac{10}{21} \approx 0,4762$.
+
+**(b) Probabilidade de escolher exatamente 8 homens em uma amostra de 10 pessoas, retiradas aleatoriamente e sem reposição, de uma população de 1000 pessoas, metade das quais são homens**
+
+* Total de pessoas: 1000, com 500 homens e 500 mulheres.  
+* Usamos a distribuição hipergeométrica: $N=1000$, $M=500$ (homens), $n=10$, $k=8$.  
+* $P(X = 8) = \dfrac{C(500, 8) \cdot C(500, 2)}{C(1000, 10)}$.  
+* Como os números são grandes, usamos a aproximação binomial, já que $N$ é muito grande e $M/N = 0,5$. Para uma binomial, $p = 0,5$, $n=10$, $k=8$:  
+* $P(X = 8) = C(10, 8) \cdot 0,5^8 \cdot 0,5^2 = \dfrac{10!}{8!2!} \cdot 0,5^{10} = 45 \cdot \dfrac{1}{1024} = \dfrac{45}{1024} \approx 0,0439$.
+
+**Cálculo em R**
+
+```{r}
+# (a) Probabilidade de 2 mulheres em 5 sorteios sem reposicao
+N_total_a <- 9
+M_mulheres <- 4
+n_amostra_a <- 5
+k_mulheres <- 2
+p_2_mulheres <- dhyper(k_mulheres, M_mulheres, N_total_a - M_mulheres, n_amostra_a)
+
+# (b) Probabilidade de 8 homens em 10 sorteios sem reposicao (aproximacao binomial)
+n_amostra_b <- 10
+k_homens <- 8
+p_homem <- 0.5
+p_8_homens <- dbinom(k_homens, n_amostra_b, p_homem)
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("2 mulheres em 5 sorteios (a)", "8 homens em 10 sorteios (b)"),
+  Probabilidade = c(p_2_mulheres, p_8_homens)
+)
+
+print(resultado)
+```
+
+## THE POISSON DISTRIBUTION
+
+### 3.62
+
+Past experience shows that there are two traffic accidents at an intersection per week. What is the probability of:  
+(a) Four accidents during a randomly selected week?  
+(b) No accidents?  
+(c) What is the expected value and standard deviation of the distribution?
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+
+* A média de 2 acidentes por semana sugere uma distribuição de Poisson com parâmetro $\lambda = 2$.
+
+**(a) Probabilidade de 4 acidentes em uma semana selecionada aleatoriamente**
+
+* Para uma distribuição de Poisson, $P(X = k) = \dfrac{e^{-\lambda} \lambda^k}{k!}$.  
+* Para $k=4$, $\lambda=2$: $P(X = 4) = \dfrac{e^{-2} \cdot 2^4}{4!} = \dfrac{e^{-2} \cdot 16}{24} = \dfrac{e^{-2} \cdot 2}{3} \approx \dfrac{0,1353 \cdot 2}{3} \approx 0,0902$.
+
+**(b) Probabilidade de nenhum acidente**
+
+* Para $k=0$, $\lambda=2$: $P(X = 0) = \dfrac{e^{-2} \cdot 2^0}{0!} = e^{-2} \approx 0,1353$.
+
+**(c) Valor esperado e desvio padrão da distribuição**
+
+* Para uma distribuição de Poisson, o valor esperado é $E(X) = \lambda = 2$.  
+* O desvio padrão é $\sigma = \sqrt{\lambda} = \sqrt{2} \approx 1,4142$.
+
+**Cálculo em R**
+
+```{r}
+# Parametro da distribuicao de Poisson
+lambda <- 2
+
+# (a) Probabilidade de 4 acidentes
+p_4_acidentes <- dpois(4, lambda)
+
+# (b) Probabilidade de 0 acidentes
+p_0_acidentes <- dpois(0, lambda)
+
+# (c) Valor esperado e desvio padrao
+valor_esperado <- lambda
+desvio_padrao <- sqrt(lambda)
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("4 acidentes (a)", "0 acidentes (b)", "Valor esperado (c)", "Desvio padrao (c)"),
+  Valor = c(p_4_acidentes, p_0_acidentes, valor_esperado, desvio_padrao)
+)
+
+print(resultado)
+```
+
+### 3.63
+
+Past experience shows that 0.003 of the national labor force get seriously ill during a year. If 1000 persons are randomly selected from the national labor force:  
+(a) What is the expected number of workers that will get sick during a year?  
+(b) What is the probability that 5 workers will get sick during the year?
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+
+* A probabilidade de um trabalhador adoecer gravemente é $p = 0,003$. Para 1000 pessoas selecionadas aleatoriamente, usamos a distribuição binomial, mas, como $n$ é grande e $p$ é pequeno, a distribuição de Poisson é uma boa aproximação com $\lambda = n \cdot p = 1000 \cdot 0,003 = 3$.
+
+**(a) Número esperado de trabalhadores que adoecerão durante um ano**
+
+* Para uma distribuição de Poisson, o valor esperado é $E(X) = \lambda = 3$.
+
+**(b) Probabilidade de que 5 trabalhadores adoecerão durante o ano**
+
+* Usando a distribuição de Poisson, $P(X = k) = \dfrac{e^{-\lambda} \lambda^k}{k!}$.  
+* Para $k=5$, $\lambda=3$: $P(X = 5) = \dfrac{e^{-3} \cdot 3^5}{5!} = \dfrac{e^{-3} \cdot 243}{120} \approx \dfrac{0,0498 \cdot 243}{120} \approx 0,1008$.
+
+**Cálculo em R**
+
+```{r}
+# Parametros
+n <- 1000
+p_doenca <- 0.003
+lambda <- n * p_doenca
+
+# (a) Numero esperado de doentes
+valor_esperado <- lambda
+
+# (b) Probabilidade de 5 doentes
+p_5_doentes <- dpois(5, lambda)
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("Numero esperado de doentes (a)", "5 doentes (b)"),
+  Valor = c(valor_esperado, p_5_doentes)
+)
+
+print(resultado)
+```
+
+## CONTINUOUS PROBABILITY DISTRIBUTIONS: THE NORMAL DISTRIBUTION
+
+### 3.64
+
+Give the formulas:  
+(a) the probability that continuous variable \( X \) falls between \( X_1 \) and \( X_2 \)  
+(b) the normal distribution  
+(c) the expected value and variance of the normal distribution  
+(d) the standard normal distribution  
+(e) what is the mean and variance of the standard normal distribution?
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+
+**(a) Fórmula para a probabilidade de que uma variável contínua \( X \) esteja entre \( X_1 \) e \( X_2 \)**
+
+* Para uma variável contínua \( X \) com função densidade de probabilidade \( f(x) \), a probabilidade é:  
+* $P(X_1 < X < X_2) = \int_{X_1}^{X_2} f(x) \, dx$.
+
+**(b) Fórmula da distribuição normal**
+
+* A função densidade de probabilidade da distribuição normal para uma variável \( X \) com média \( \mu \) e desvio padrão \( \sigma \) é:  
+* $f(x) = \dfrac{1}{\sigma \sqrt{2\pi}} e^{-\dfrac{(x - \mu)^2}{2\sigma^2}}$, para \(-\infty < x < \infty\).
+
+**(c) Valor esperado e variância da distribuição normal**
+
+* Valor esperado: $E(X) = \mu$.  
+* Variância: $Var(X) = \sigma^2$.
+
+**(d) Fórmula da distribuição normal padrão**
+
+* A distribuição normal padrão é uma distribuição normal com \( \mu = 0 \) e \( \sigma = 1 \). Sua função densidade é:  
+* $f(z) = \dfrac{1}{\sqrt{2\pi}} e^{-\dfrac{z^2}{2}}$, onde \( z = \dfrac{x - \mu}{\sigma} \), para \(-\infty < z < \infty\).
+
+**(e) Média e variância da distribuição normal padrão**
+
+* Média: $E(Z) = 0$.  
+* Variância: $Var(Z) = 1$.
+
+**Cálculo em R**
+
+```{r}
+# As respostas são formulas teoricas, mas podemos demonstrar propriedades da normal padrao
+# (e) Media e variancia da distribuicao normal padrao
+media_normal_padrao <- 0
+variancia_normal_padrao <- 1
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("Media normal padrao (e)", "Variancia normal padrao (e)"),
+  Valor = c(media_normal_padrao, variancia_normal_padrao)
+)
+
+print(resultado)
+
+# Nota: As partes (a), (b), (c) e (d) sao formulas teoricas e nao requerem calculos numericos.
+cat("Nota: As respostas (a), (b), (c) e (d) sao formulas e nao envolvem calculos numericos.\n")
+```
+
+### 3.65
+
+Find the area under the standard normal curve  
+(a) within \( z = \pm 1.64 \)  
+(b) within \( z = \pm 1.96 \)  
+(c) within \( z = \pm 2.58 \)  
+(d) between \( z = 0.90 \) and \( z = 2.10 \)  
+(e) to the left of \( z = 0.90 \)  
+(f) to the right of \( z = 2.10 \)  
+(g) to the left of \( z = 0.90 \) and to the right of \( z = 2.10 \)
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+* Para uma distribuição normal padrão ($Z \sim N(0,1)$), usamos a função de distribuição acumulada (CDF) $\Phi(z) = P(Z < z)$ para calcular as probabilidades. As áreas pedidas são calculadas usando a CDF da normal padrão.
+
+**(a) Área sob a curva normal padrão dentro de $z = \pm 1,64$**
+
+* Área entre $z = -1,64$ e $z = 1,64$: $P(-1,64 < Z < 1,64) = \Phi(1,64) - \Phi(-1,64)$.  
+* Como $\Phi(-z) = 1 - \Phi(z)$, temos $\Phi(-1,64) = 1 - \Phi(1,64)$.  
+* $\Phi(1,64) \approx 0,9495$, então $\Phi(-1,64) \approx 1 - 0,9495 = 0,0505$.  
+* $P(-1,64 < Z < 1,64) = 0,9495 - 0,0505 = 0,8990$.
+
+**(b) Área sob a curva normal padrão dentro de $z = \pm 1,96$**
+
+* Área entre $z = -1,96$ e $z = 1,96$: $P(-1,96 < Z < 1,96) = \Phi(1,96) - \Phi(-1,96)$.  
+* $\Phi(1,96) \approx 0,9750$, então $\Phi(-1,96) \approx 1 - 0,9750 = 0,0250$.  
+* $P(-1,96 < Z < 1,96) = 0,9750 - 0,0250 = 0,9500$.
+
+**(c) Área sob a curva normal padrão dentro de $z = \pm 2,58$**
+
+* Área entre $z = -2,58$ e $z = 2,58$: $P(-2,58 < Z < 2,58) = \Phi(2,58) - \Phi(-2,58)$.  
+* $\Phi(2,58) \approx 0,9951$, então $\Phi(-2,58) \approx 1 - 0,9951 = 0,0049$.  
+* $P(-2,58 < Z < 2,58) = 0,9951 - 0,0049 = 0,9902$.
+
+**(d) Área sob a curva normal padrão entre $z = 0,90$ e $z = 2,10$**
+
+* Área entre $z = 0,90$ e $z = 2,10$: $P(0,90 < Z < 2,10) = \Phi(2,10) - \Phi(0,90)$.  
+* $\Phi(2,10) \approx 0,9821$, $\Phi(0,90) \approx 0,8159$.  
+* $P(0,90 < Z < 2,10) = 0,9821 - 0,8159 = 0,1662$.
+
+**(e) Área à esquerda de $z = 0,90$**
+
+* $P(Z < 0,90) = \Phi(0,90) \approx 0,8159$.
+
+**(f) Área à direita de $z = 2,10$**
+
+* $P(Z > 2,10) = 1 - \Phi(2,10) \approx 1 - 0,9821 = 0,0179$.
+
+**(g) Área à esquerda de $z = 0,90$ e à direita de $z = 2,10$**
+
+* $P(Z < 0,90 \text{ ou } Z > 2,10) = P(Z < 0,90) + P(Z > 2,10)$.  
+* $P(Z < 0,90) = \Phi(0,90) \approx 0,8159$.  
+* $P(Z > 2,10) = 1 - \Phi(2,10) \approx 0,0179$.  
+* $P(Z < 0,90 \text{ ou } Z > 2,10) = 0,8159 + 0,0179 = 0,8338$.
+
+**Cálculo em R**
+
+```{r}
+# (a) Area dentro de z = ±1.64
+p_a <- pnorm(1.64) - pnorm(-1.64)
+
+# (b) Area dentro de z = ±1.96
+p_b <- pnorm(1.96) - pnorm(-1.96)
+
+# (c) Area dentro de z = ±2.58
+p_c <- pnorm(2.58) - pnorm(-2.58)
+
+# (d) Area entre z = 0.90 e z = 2.10
+p_d <- pnorm(2.10) - pnorm(0.90)
+
+# (e) Area a esquerda de z = 0.90
+p_e <- pnorm(0.90)
+
+# (f) Area a direita de z = 2.10
+p_f <- 1 - pnorm(2.10)
+
+# (g) Area a esquerda de z = 0.90 e a direita de z = 2.10
+p_g <- pnorm(0.90) + (1 - pnorm(2.10))
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("Dentro de z = ±1.64 (a)", "Dentro de z = ±1.96 (b)", "Dentro de z = ±2.58 (c)",
+           "Entre z = 0.90 e z = 2.10 (d)", "A esquerda de z = 0.90 (e)",
+           "A direita de z = 2.10 (f)", "A esquerda de z = 0.90 e a direita de z = 2.10 (g)"),
+  Probabilidade = c(p_a, p_b, p_c, p_d, p_e, p_f, p_g)
+)
+
+print(resultado)
+```
+
+### 3.66
+
+A random variable is normally distributed with \( \mu = 67 \) and \( \sigma = 3 \). What is the probability that this random variable will assume a value  
+(a) Between 67 and 70?  
+(b) Between 60 and 70?  
+(c) Between 60 and 65?  
+(d) Below 60?  
+(e) Above 65?
+
+#### \textcolor{blue}{\textbf{\textit{Ans.}}}
+
+* Para uma variável aleatória \( X \) normalmente distribuída com \( \mu = 67 \) e \( \sigma = 3 \), calculamos as probabilidades usando a distribuição normal padrão, convertendo os valores para \( Z = \dfrac{X - \mu}{\sigma} \) e usando a função de distribuição acumulada (CDF) \( \Phi(z) \).
+
+**(a) Probabilidade de \( X \) estar entre 67 e 70**
+
+* Para \( X = 67 \): \( Z = \dfrac{67 - 67}{3} = 0 \), \( \Phi(0) = 0,5 \).  
+* Para \( X = 70 \): \( Z = \dfrac{70 - 67}{3} = 1 \), \( \Phi(1) \approx 0,8413 \).  
+* \( P(67 < X < 70) = \Phi(1) - \Phi(0) = 0,8413 - 0,5 = 0,3413 \).
+
+**(b) Probabilidade de \( X \) estar entre 60 e 70**
+
+* Para \( X = 60 \): \( Z = \dfrac{60 - 67}{3} = -2,3333 \), \( \Phi(-2,3333) \approx 1 - \Phi(2,3333) \approx 1 - 0,9901 = 0,0099 \).  
+* Para \( X = 70 \): \( Z = 1 \), \( \Phi(1) \approx 0,8413 \).  
+* \( P(60 < X < 70) = \Phi(1) - \Phi(-2,3333) = 0,8413 - 0,0099 = 0,8314 \).
+
+**(c) Probabilidade de \( X \) estar entre 60 e 65**
+
+* Para \( X = 60 \): \( Z = -2,3333 \), \( \Phi(-2,3333) \approx 0,0099 \).  
+* Para \( X = 65 \): \( Z = \dfrac{65 - 67}{3} = -0,6667 \), \( \Phi(-0,6667) \approx 1 - \Phi(0,6667) \approx 1 - 0,7475 = 0,2525 \).  
+* \( P(60 < X < 65) = \Phi(-0,6667) - \Phi(-2,3333) = 0,2525 - 0,0099 = 0,2426 \).
+
+**(d) Probabilidade de \( X \) estar abaixo de 60**
+
+* Para \( X = 60 \): \( Z = -2,3333 \), \( P(X < 60) = \Phi(-2,3333) \approx 0,0099 \).
+
+**(e) Probabilidade de \( X \) estar acima de 65**
+
+* Para \( X = 65 \): \( Z = -0,6667 \), \( P(X > 65) = 1 - \Phi(-0,6667) = \Phi(0,6667) \approx 0,7475 \).
+
+**Cálculo em R**
+
+```{r}
+# Parametros da distribuicao normal
+mu <- 67
+sigma <- 3
+
+# (a) Probabilidade entre 67 e 70
+z_67 <- (67 - mu) / sigma
+z_70 <- (70 - mu) / sigma
+p_a <- pnorm(z_70) - pnorm(z_67)
+
+# (b) Probabilidade entre 60 e 70
+z_60 <- (60 - mu) / sigma
+p_b <- pnorm(z_70) - pnorm(z_60)
+
+# (c) Probabilidade entre 60 e 65
+z_65 <- (65 - mu) / sigma
+p_c <- pnorm(z_65) - pnorm(z_60)
+
+# (d) Probabilidade abaixo de 60
+p_d <- pnorm(z_60)
+
+# (e) Probabilidade acima de 65
+p_e <- 1 - pnorm(z_65)
+
+# Resultados
+resultado <- data.frame(
+  Caso = c("Entre 67 e 70 (a)", "Entre 60 e 70 (b)", "Entre 60 e 65 (c)",
+           "Abaixo de 60 (d)", "Acima de 65 (e)"),
+  Probabilidade = c(p_a, p_b, p_c, p_d, p_e)
+)
+
+print(resultado)
+```
